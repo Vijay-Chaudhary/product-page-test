@@ -14,5 +14,33 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('app');
+    return view('welcome');
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+
+Route::get('/createToken',function() {
+    $credentials = [
+        'email' => 'admin@admin.com',
+        'password' => 'password',
+    ];
+
+    if(Auth::attempt($credentials)) {
+        $user = Auth::user();
+
+        $adminToken = $user->createToken('admin-token', ['create', 'update', 'delete']);
+        $updateToken = $user->createToken('update-token', ['create', 'update']);
+        $basicToken = $user->createToken('basic-token');
+
+        return [
+            'admin' => $adminToken,
+            'updateToken' => $updateToken,
+            'basic' => $basicToken,
+        ];
+    }
+});
+
+require __DIR__.'/auth.php';

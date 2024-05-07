@@ -1,10 +1,7 @@
-require('./bootstrap')
+require('./bootstrap');
 
-import { createApp } from 'vue'
-import router from './router'
+import Alpine from 'alpinejs';
 
-const app = createApp({})
+window.Alpine = Alpine;
 
-app.use(router)
-
-app.mount('#app')
+Alpine.start();
